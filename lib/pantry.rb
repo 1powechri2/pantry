@@ -2,11 +2,13 @@ require_relative 'recipe'
 
 class Pantry
   attr_reader :stock,
-              :shopping_list
+              :shopping_list,
+              :cookbook
 
   def initialize
     @stock = {}
     @shopping_list = nil
+    @cookbook = []
   end
 
   def stock_check(item)
@@ -41,5 +43,19 @@ class Pantry
       string
     end
     print_list.chop
+  end
+
+  def add_to_cookbook(recipe)
+    @cookbook.push(recipe)
+  end
+
+  def what_can_i_make
+    cookbook.map do |recipe|
+      recipe.ingredients.map do |key, value|
+        if @stock[key] >= value
+          recipe.name
+        end
+      end
+    end
   end
 end
